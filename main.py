@@ -1,4 +1,4 @@
-from models import BlockChain
+from app import BlockChain
 
 if __name__ == "__main__":
     block_chain = BlockChain()

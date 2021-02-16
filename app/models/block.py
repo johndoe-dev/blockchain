@@ -1,5 +1,5 @@
 from datetime import datetime
-from util import calculate_hash
+from app.util import calculate_hash
 
 
 class Block:
