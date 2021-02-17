@@ -196,12 +196,11 @@ api.add_resource(Hello, "/world")
 
 Finally, we will update the \_\_init__.py of __app__
 
-app/\_\_init__.py
-
 We must add the new blueprint in the __blueprints__ dict in the \_\_call__() method
 
 the __key__ is the blueprint instance and the __value__ is the url prefix for all the routes of the blueprint
 
+app/\_\_init__.py
 ``` python
 class Server:
 
