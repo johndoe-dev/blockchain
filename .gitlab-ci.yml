@@ -39,7 +39,7 @@ sbapi:sonar:
       -Dsonar.projectName=${PROJECT_SONAR_NAME}
       -Dsonar.login=$SONAR_TOKEN
       -Dsonar.sources="."
-      -Dsonar.exclusions=tests/
+      -Dsonar.exclusions=tests/*
       -Dsonar.sourceEncoding="UTF-8"
       -Dsonar.language=python
       -Dsonar.python.xunit.reportPaths=$CI_PROJECT_DIR/pytest-report.xml
