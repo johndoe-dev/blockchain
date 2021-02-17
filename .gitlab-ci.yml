@@ -28,8 +28,6 @@ sbapi:build:
 sbapi:sonar:
   image: ciricihq/gitlab-sonar-scanner
   stage: test
-  tags:
-    - glr1-2
   dependencies:
     - sbapi:build
 
