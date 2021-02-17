@@ -1,0 +1,48 @@
+variables:
+  IMAGE_NAME: $CI_REGISTRY_IMAGE:$CI_COMMIT_REF_SLUG
+  IMAGE_TAG: ${CI_COMMIT_REF_SLUG}
+  DOCKER_NAME: blockchain-python
+  PROJECT_SONAR_NAME: Spectrum-blockchain-python
+
+stages:
+  - build
+  - test
+
+
+default:
+  image: python:3.8
+
+sbapi:build:
+  # Build job with python3.8
+  stage: build
+  script:
+    - pip install -r requirements.txt
+    - pytest "tests/" --junitxml=$CI_PROJECT_DIR/pytest-report.xml --cov="app" --cov-report xml
+  artifacts:
+    paths:
+      - $CI_PROJECT_DIR/pytest-report.xml
+      - $CI_PROJECT_DIR/coverage.xml
+    expire_in: 1h
+
+# Sonar code quality analysis - note a full test coverage report through a jacoco.exec merged file in base project folder
+sbapi:sonar:
+  image: ciricihq/gitlab-sonar-scanner
+  stage: test
+  tags:
+    - glr1-2
+  dependencies:
+    - sbapi:build
+
+  script:
+    - >
+      sonar-scanner
+      -Dsonar.host.url=$SONAR_URL
+      -Dsonar.projectKey=$SONAR_KEY$CI_PROJECT_NAME
+      -Dsonar.projectName=${PROJECT_SONAR_NAME}
+      -Dsonar.login=$SONAR_TOKEN
+      -Dsonar.sources="."
+      -Dsonar.exclusions=tests/
+      -Dsonar.sourceEncoding="UTF-8"
+      -Dsonar.language=python
+      -Dsonar.python.xunit.reportPaths=$CI_PROJECT_DIR/pytest-report.xml
+      -Dsonar.python.coverage.reportPaths=$CI_PROJECT_DIR/coverage.xml

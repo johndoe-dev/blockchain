@@ -1,7 +1,17 @@
 .idea/
 __pycache__/
 .DS_Store
-.pytest_cache
-.coverage
 htmlcov/
 venv/
+
+# build
+*.egg-*
+build/
+dist/
+
+# tests
+.pytest_cache
+.coverage
+coverage.xml
+pytest-report.xml
+
