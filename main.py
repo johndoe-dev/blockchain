@@ -23,7 +23,7 @@ def test_block_chain():
 
     print("Blockchain validity:", block_chain.is_block_chain_valid())
 
-    print(block_chain.json())
+    print(block_chain.serialize())
 
 
 if __name__ == "__main__":
