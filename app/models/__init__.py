@@ -1,3 +1,3 @@
 from app.models.block import *
 
-__all__ = (Block, BlockChain)
+__all__ = (Block, BlockChain, BlockChainException)
