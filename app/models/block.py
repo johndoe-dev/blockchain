@@ -93,10 +93,9 @@ class BlockChain:
             print("first block previous_hash not None")
             return False
 
-        if check_hash:
-            if first_block.hash is None or calculate_hash(first_block) != first_block.hash:
-                print("first block hash doesn't correspond")
-                return False
+        if check_hash and (first_block.hash is None or calculate_hash(first_block) != first_block.hash):
+            print("first block hash doesn't correspond")
+            return False
 
         return True
 
@@ -111,9 +110,8 @@ class BlockChain:
         if block.hash is None:
             return False
 
-        if check_hash:
-            if calculate_hash(block) != block.hash:
-                return False
+        if check_hash and calculate_hash(block) != block.hash:
+            return False
 
         return True
 
