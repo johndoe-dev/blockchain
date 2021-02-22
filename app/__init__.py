@@ -1,10 +1,5 @@
 from flask import Flask
 
-from app.models import Block, BlockChain, BlockChainException
-
-
-__all__ = ("Block", "BlockChain", "BlockChainException", "server", "create_app")
-
 
 class Server:
 
@@ -48,12 +43,38 @@ class Server:
     def __instantiate_extensions(self):
         """
         Method to instantiate all the extensions of Flask
+
+        You can add the flask extensions here
+        Next you will need to initialise your extensions in the method __initialize_extensions
+        Example:
+        self.__db = SQLAlchemy()
+
         :return:
         """
 
     def __initialize_extensions(self):
         """
         Method to initialize al the extensions of Flask
+
+        You can init your flask extensions here, don't forget to instantiate your extension
+        Example:
+        self.__db.init_app(self.__app)
+
+        After initialized your extensions, you need to create a property to access your extensions
+        Example:
+        class Server:
+            ...
+
+            @property
+            def db():
+                return self.__db
+
+        You can access the db with the server instance:
+        Example:
+        server = Server()
+        db = server.db
+
+
         :return:
         """
 

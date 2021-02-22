@@ -1,4 +1,5 @@
 from app import create_app, server
+from app.models import BlockChain
 
 
 class BaseTest:
@@ -19,3 +20,11 @@ class BaseTest:
     @classmethod
     def teardown_class(cls):
         cls.ctx.pop()
+
+
+class Base:
+    def setup_method(self):
+        self.block_chain = BlockChain()
+
+    def teardown_method(self):
+        BlockChain.blocks = []

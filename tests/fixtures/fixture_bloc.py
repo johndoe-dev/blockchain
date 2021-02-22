@@ -1,4 +1,4 @@
-from app import Block
+from app.models import Block
 from datetime import datetime
 
 
@@ -49,3 +49,40 @@ def fixture_expected_serialized_block(new_block):
 
 def fixture_expected_serialized_block_chain(block_chain):
     return [fixture_expected_serialized_block(block) for block in block_chain]
+
+
+def fixture_expected_block_chain_json():
+    return [
+        {
+            "index": 0,
+            "previous_hash": None,
+            "timestamp": "2021-02-18 13:29:20.045029",
+            "data": "first block",
+            "hash": "c7a373b2c7ee2d815917fc3d7fe72e1be31441b1474f5fa338a3c48f04afa7d1"
+        },
+        {
+            "index": 1,
+            "previous_hash": "c7a373b2c7ee2d815917fc3d7fe72e1be31441b1474f5fa338a3c48f04afa7d1",
+            "timestamp": "2021-02-18 13:29:20.045066",
+            "data": "second block",
+            "hash": "c31c419bcb207b519465703273124291b0df4de9b4484e14b8fa0f047399bc2d"
+        },
+        {
+            "index": 2,
+            "previous_hash": "c31c419bcb207b519465703273124291b0df4de9b4484e14b8fa0f047399bc2d",
+            "timestamp": "2021-02-18 13:29:20.045075",
+            "data": "third block",
+            "hash": "6336ddb3e9bbb40ad60561ab3557d40132d234a98a048bfd3d707b68f68edd17"
+        },
+        {
+            "index": 3,
+            "previous_hash": "6336ddb3e9bbb40ad60561ab3557d40132d234a98a048bfd3d707b68f68edd17",
+            "timestamp": "2021-02-18 13:29:20.045081",
+            "data": "fourth block",
+            "hash": "b663e1ed33b4e38fd336d3114345eb07936d732d608cb3a347d450f8a5480ad3"
+        }
+    ]
+
+
+def fixture_block_data():
+    return ["first block", "second block", "third block", "fourth block"]

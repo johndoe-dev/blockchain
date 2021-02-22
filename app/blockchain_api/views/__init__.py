@@ -1,11 +1,14 @@
 from flask import Blueprint
 from flask_restful import Api
 
-from app.blockchain_api.views.blockchain import BlockChainApi
+from app.blockchain_api.views.blockchain import BlockChainInitApi, BlockChainApi
 
 block_chain_blueprint = Blueprint("blockchain", __name__)
 api = Api(block_chain_blueprint)
 
 
 # init block_chain with a first block
-api.add_resource(BlockChainApi, "/init")
+api.add_resource(BlockChainInitApi, "/init")
+
+# add block to blockchain
+api.add_resource(BlockChainApi, "/add")

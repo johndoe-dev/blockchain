@@ -1,7 +1,7 @@
 from flask.cli import FlaskGroup
 
 from app import create_app
-from app import BlockChain
+from app.models import BlockChain
 
 cli = FlaskGroup(create_app=create_app)
 
