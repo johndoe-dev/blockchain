@@ -49,8 +49,9 @@ The base url is [http://localhost:5000](http://localhost:5000)
 #### List of routes
 
 | Routes   |      METHODS      |  DESCRIPTION |
-|:----------|:-------------:|------:|
-| [/blockchain/init](http://localhost:5000/blockchain/init) |  POST | Create the first block |
+|:----------|:-------------:|:------|
+| [/blockchain/init](http://localhost:5000/blockchain/init) |  POST | Create the first block (or add block if first block already exists) |
+| [/blockchain/add](http://localhost:5000/blockchain/add) | POST | Add block to the block chain (return error if block chain has not aa first block)
 
 
 ## Update code
