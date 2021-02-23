@@ -288,3 +288,29 @@ class TestBlockChain(Base):
 
         assert e.value.code == "invalid-list"
         assert e.value.message == "Invalid list to create blockchain"
+
+    def test_get_block_chain(self, block_data):
+
+        new_block_chain = BlockChain(block_data[0])
+
+        new_block_chain.add_block(new_block_chain.new_block(block_data[1]))
+        new_block_chain.add_block(new_block_chain.new_block(block_data[2]))
+        new_block_chain.add_block(new_block_chain.new_block(block_data[3]))
+
+        list_block = new_block_chain.get_block_chain()
+
+        expected_data = ["first block", "second block", "third block", "fourth block"]
+
+        assert len(list_block) == 4
+
+        for index, block in enumerate(list_block):
+            if index == 0:
+                assert block.index == index
+                assert not block.previous_hash
+                assert isinstance(block.hash, str)
+                assert block.data == expected_data[index]
+            else:
+                assert block.index == index
+                assert block.previous_hash == list_block[index - 1].hash
+                assert isinstance(block.hash, str)
+                assert block.data == expected_data[index]

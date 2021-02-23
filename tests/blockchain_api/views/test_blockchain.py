@@ -1,5 +1,6 @@
-from http import HTTPStatus
 import json
+import copy
+from http import HTTPStatus
 
 
 class TestBlockChainInitApi:
@@ -190,3 +191,110 @@ class TestBlockChainApi:
 
         data = json.loads(resp.data.decode())
         assert data == "Invalid data received to create a block"
+
+
+class TestBlockChainCompareApi:
+
+    def test_compare_block_chain_ok(self, app, block_chain_json, expected_block_chain_json):
+        test_client = app.test_client()
+
+        with open(block_chain_json, "r") as block_chain_json_file:
+            first_block_chain = json.load(block_chain_json_file)
+
+        second_block_chain = copy.deepcopy(first_block_chain)
+
+        second_block_chain[3]["data"] = "different data"
+
+        resp = test_client.post(
+            "blockchain/compare",
+            data=json.dumps({
+                "first_block_chain": first_block_chain,
+                "second_block_chain": second_block_chain
+            }),
+            content_type="application/json",
+        )
+
+        assert resp.status_code == HTTPStatus.CREATED
+
+        data = json.loads(resp.data.decode())
+
+        assert len(data) == 5
+        assert data[:-1] == expected_block_chain_json
+        assert data[-1]["index"] == 4
+        assert data[-1]["previous_hash"] == expected_block_chain_json[-1]["hash"]
+        assert data[-1]["timestamp"]
+        assert data[-1]["data"] == "different data"
+        assert data[-1]["hash"]
+
+    def test_compare_block_chain_failed_when_bad_key_for_block_chain(self, app, block_chain_json):
+        test_client = app.test_client()
+
+        with open(block_chain_json, "r") as block_chain_json_file:
+            first_block_chain = json.load(block_chain_json_file)
+
+        second_block_chain = copy.deepcopy(first_block_chain)
+
+        resp = test_client.post(
+            "blockchain/compare",
+            data=json.dumps({
+                "first_block_chain": first_block_chain,
+                "bad_key": second_block_chain
+            }),
+            content_type="application/json",
+        )
+
+        assert resp.status_code == HTTPStatus.BAD_REQUEST
+
+        data = json.loads(resp.data.decode())
+
+        assert data == "Data miss keys : 'second_block_chain'"
+
+    def test_compare_block_chain_failed_when_missing_key(self, app, block_chain_json):
+        test_client = app.test_client()
+
+        with open(block_chain_json, "r") as block_chain_json_file:
+            first_block_chain = json.load(block_chain_json_file)
+
+        second_block_chain = copy.deepcopy(first_block_chain)
+
+        del first_block_chain[0]["index"]
+
+        resp = test_client.post(
+            "blockchain/compare",
+            data=json.dumps({
+                "first_block_chain": first_block_chain,
+                "second_block_chain": second_block_chain
+            }),
+            content_type="application/json",
+        )
+
+        assert resp.status_code == HTTPStatus.BAD_REQUEST
+
+        data = json.loads(resp.data.decode())
+
+        assert data == "Invalid list to create blockchain"
+
+    def test_compare_block_chain_failed_when_block_chain_is_not_valid(self, app, block_chain_json):
+        test_client = app.test_client()
+
+        with open(block_chain_json, "r") as block_chain_json_file:
+            first_block_chain = json.load(block_chain_json_file)
+
+        second_block_chain = copy.deepcopy(first_block_chain)
+
+        first_block_chain[1]["hash"] = "invalid hash"
+
+        resp = test_client.post(
+            "blockchain/compare",
+            data=json.dumps({
+                "first_block_chain": first_block_chain,
+                "second_block_chain": second_block_chain
+            }),
+            content_type="application/json",
+        )
+
+        assert resp.status_code == HTTPStatus.BAD_REQUEST
+
+        data = json.loads(resp.data.decode())
+
+        assert data == "Blockchain  invalid"

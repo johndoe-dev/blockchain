@@ -1,6 +1,8 @@
-class BlockChainException(Exception):
-    def __init__(self, message: str = None):
-        self._message = message
+from app.base_exception import CustomBaseException
+
+
+class BlockChainException(CustomBaseException):
+    pass
 
 
 class BlockChainAlreadyInitError(BlockChainException):

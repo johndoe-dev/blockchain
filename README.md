@@ -48,11 +48,12 @@ The base url is [http://localhost:5000](http://localhost:5000)
 
 #### List of routes
 
-| Routes   |      METHODS      |  DESCRIPTION |
-|:----------|:-------------:|:------|
-| [/blockchain/init](http://localhost:5000/blockchain/init) |  POST | Create the first block (or add block if first block already exists) |
-| [/blockchain/add](http://localhost:5000/blockchain/add) | POST | Add block to the block chain (return error if block chain has not aa first block)
-
+| Routes   |      METHODS      |  DESCRIPTION | EXAMPLE OF DATA |
+|:----------|:---------:|:----------|:----------:|
+| [/blockchain/init](http://localhost:5000/blockchain/init) |  POST | Create the first block (or add block if first block already exists) | [Example first bloc JSON](examples/example_first_bloc.json) |
+| [/blockchain/init?from_json](http://localhost:5000/blockchain/init?from_json) | POST | Create an entire blockchain from a json | [Example bloc chain JSON](examples/example_bloc_chain.json) |
+| [/blockchain/add](http://localhost:5000/blockchain/add) | POST | Add block to the block chain (return error if block chain has not aa first block) | [Example bloc JSON](examples/example_bloc.json) |
+| [/blockchain/compare](http://localhost:5000/blockchain/compare) | POST | Compare data of 2 blockchain aand return a concatenate veersion of the 2 blockxchains. | [Example compare block chain JSON](examples/example_compare_bloc_chain.json) |
 
 ## Update code
 

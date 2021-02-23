@@ -1,5 +1,6 @@
 from typing import List
 from datetime import datetime
+from copy import deepcopy
 from app.util import calculate_hash
 from app.models.blockchain_exception import (
     BlockChainAlreadyInitError,
@@ -130,6 +131,10 @@ class BlockChain:
                 return False
 
         return True
+
+    @staticmethod
+    def get_block_chain():
+        return deepcopy(BlockChain.blocks)
 
     def __str__(self):
         chain = ""

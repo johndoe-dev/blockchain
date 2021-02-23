@@ -1,5 +1,6 @@
 import json
 import pytest
+import copy
 from tests.base_test import Base
 from app.models import BlockChainDataInvalid, BlockChainNotInitializedError, BlockChainInvalid, BlockChainInvalidList
 from app.blockchain_api.controllers import blockchain_controller
@@ -98,3 +99,56 @@ class TestBlockChainController(Base):
 
         with pytest.raises(BlockChainInvalid):
             blockchain_controller.init_block_chain_from_list(self.block_chain, block_chain_data)
+
+    def test_compare_block_chain_ok(self, block_chain_json, expected_block_chain_json):
+        with open(block_chain_json, "r") as block_chain_json_file:
+            first_block_chain = json.load(block_chain_json_file)
+
+        second_block_chain = copy.deepcopy(first_block_chain)
+
+        second_block_chain[3]["data"] = "different data"
+
+        result = blockchain_controller.compare_block_chain(self.block_chain, first_block_chain, second_block_chain)
+
+        assert len(result) == 5
+        assert result[:-1] == expected_block_chain_json
+        assert result[-1]["index"] == 4
+        assert result[-1]["previous_hash"] == expected_block_chain_json[-1]["hash"]
+        assert result[-1]["timestamp"]
+        assert result[-1]["data"] == "different data"
+        assert result[-1]["hash"]
+
+    def test_compare_block_chain_with_different_len_ok(self, block_chain_json, expected_block_chain_json):
+        with open(block_chain_json, "r") as block_chain_json_file:
+            first_block_chain = json.load(block_chain_json_file)
+
+        second_block_chain = copy.deepcopy(first_block_chain)
+
+        del first_block_chain[3]
+
+        result = blockchain_controller.compare_block_chain(self.block_chain, first_block_chain, second_block_chain)
+
+        assert len(result) == 4
+        assert result == expected_block_chain_json
+
+    def test_compare_block_chain_failed_when_missing_key(self, block_chain_json):
+        with open(block_chain_json, "r") as block_chain_json_file:
+            first_block_chain = json.load(block_chain_json_file)
+
+        second_block_chain = copy.deepcopy(first_block_chain)
+
+        del first_block_chain[0]["index"]
+
+        with pytest.raises(BlockChainInvalidList):
+            blockchain_controller.compare_block_chain(self.block_chain, first_block_chain, second_block_chain)
+
+    def test_compare_block_chain_failed_when_block_chain_is_not_valid(self, block_chain_json):
+        with open(block_chain_json, "r") as block_chain_json_file:
+            first_block_chain = json.load(block_chain_json_file)
+
+        second_block_chain = copy.deepcopy(first_block_chain)
+
+        first_block_chain[1]["hash"] = "invalid hash"
+
+        with pytest.raises(BlockChainInvalid):
+            blockchain_controller.compare_block_chain(self.block_chain, first_block_chain, second_block_chain)
