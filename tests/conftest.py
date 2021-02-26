@@ -1,7 +1,7 @@
 import os
 import pytest
 from app import create_app
-from tests.fixtures import fixture_bloc, fixture_data
+from tests.fixtures import fixture_bloc, fixture_data, fixture_config, fixture_logger
 from app.models import BlockChain
 
 
@@ -44,6 +44,30 @@ def block_data():
 def block_chain_json():
     path_file = os.path.join(os.path.dirname(__file__), "fixtures", "test_blockchain.json")
     return path_file
+
+
+@pytest.fixture()
+def config():
+    return {
+        "dev": fixture_config.fixture_development_config(),
+        "prod": fixture_config.fixture_production_config(),
+        "test": fixture_config.fixture_testing_config()
+    }
+
+
+@pytest.fixture()
+def logger_handler_watched():
+    return fixture_logger.fixture_logger_handler_watched
+
+
+@pytest.fixture()
+def logger_handler_stream():
+    return fixture_logger.fixture_logger_handler_stream
+
+
+@pytest.fixture()
+def logger_handler_rotating():
+    return fixture_logger.fixture_logger_handler_rotating
 
 
 @pytest.fixture()

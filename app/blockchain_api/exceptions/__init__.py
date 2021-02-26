@@ -17,3 +17,15 @@ class DataMissingKeyError(BlockChainApiException):
         return "Data miss some keys"
 
 
+class DataTypeError(BlockChainApiException):
+    @property
+    def code(self):
+        return "data-type-error"
+
+    @property
+    def message(self):
+        if self._message:
+            return self._message
+        return "Data has bad type"
+
+

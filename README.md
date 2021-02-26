@@ -241,6 +241,24 @@ You will have:
 
 "Hello world !"
 
+### LOGGER
+
+To add message to the logger, you need to call __current_app__ from __flask__
+
+``` python
+from flask import current_app
+```
+
+Now you just need to write the message you need
+
+``` python
+# For an error
+current_app.logger.error("some error")
+
+# For an info
+current_app.logger.info("some info")
+```
+
 ## Test
 
 To run test, you must install __pytest__ and __pytest-cov__

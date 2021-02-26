@@ -249,6 +249,30 @@ class TestBlockChainCompareApi:
 
         assert data == "Data miss keys : 'second_block_chain'"
 
+    def test_compare_block_chain_failed_when_data_received_is_not_dict(self, app, block_chain_json):
+        test_client = app.test_client()
+
+        with open(block_chain_json, "r") as block_chain_json_file:
+            first_block_chain = json.load(block_chain_json_file)
+
+        second_block_chain = copy.deepcopy(first_block_chain)
+
+        resp = test_client.post(
+            "blockchain/compare",
+            data=json.dumps([
+                first_block_chain,
+                second_block_chain
+            ]),
+            content_type="application/json",
+        )
+
+        assert resp.status_code == HTTPStatus.BAD_REQUEST
+
+        data = json.loads(resp.data.decode())
+
+        assert data == "Data must be a 'dict' with keys 'first_block_chain' and 'second_block_chain' " \
+                       "but  was <class 'list'>"
+
     def test_compare_block_chain_failed_when_missing_key(self, app, block_chain_json):
         test_client = app.test_client()
 
