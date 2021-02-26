@@ -304,3 +304,22 @@ pytest "tests/" --junitxml=pytest-report.xml --cov="app" --cov-report xml
 ``` 
 
 It will generate 2 files __pytest-report.xml__ and __coverage.xml__ (this files are requested for sonar)
+
+
+### Docker
+
+#### Build images
+
+Make sure to replace __{image_name}__ by the name you want for the images
+
+``` shell script
+docker build . --tag="{image_name}"
+```
+
+#### Run containers
+
+Make sure to replace __{image_name}__ by the image name created above and __{container_name}__ by the name you want for the container
+
+``` shell script
+docker run -d --name="{container_name}" -p 5000:5000 {image name}
+```
