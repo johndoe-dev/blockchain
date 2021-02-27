@@ -1,0 +1,17 @@
+language: python
+
+python:
+  - "3.6"
+  - "3.8"
+
+
+before_install:
+  - python --version
+  - pip install -U pip
+
+install:
+  - pip install .
+
+
+script:
+  - pytest "tests/" --cov="app" --cov-report html
