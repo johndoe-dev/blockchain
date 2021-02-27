@@ -1,5 +1,7 @@
 # Blockhain
 
+[![Build Status](https://travis-ci.com/johndoe-dev/blockchain.svg?branch=master)](https://travis-ci.com/johndoe-dev/blockchain)
+
 Creation of blockchain
 
 # Development installation
